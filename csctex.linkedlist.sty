@@ -1,27 +1,39 @@
 \ProvidesPackage{csctex.linkedlist}
+\usepackage{xparse}
+\usepackage{pgf, pgffor, fmtcount, tikz, circuitikz, qtree}
+\usetikzlibrary{fit,arrows,calc,positioning,shapes.multipart,chains}
 
 
+\newcounter{llbranchcount}
+\setcounter{llbranchcount}{0}
 
-\newcounter{llcounter}
-\setcounter{llcounter}{0}
+\newcounter{llnodecount}
+\setcounter{llnodecount}{0}
 
 
+\NewDocumentCommand\llnode{O{} D(){} m}{%
+	\ifnum\the\value{llnodecount}=0
+		\llnodeInternal[#1] (#2) {#3};
+	\else
+		\llnodeInternal[join,#1] (#2) {#3};
+	\fi
+}
 
-\newcommand{\llnode}[3][]{%
+
+\NewDocumentCommand\llnodeInternal{O{} D(){} m}{%
+	\addtocounter{llnodecount}{1};
 	\node[rectangle split,
                     rectangle split parts=2,
                     rectangle split horizontal,
                     draw,
                     on chain,
-                    join, #1] (#3) {#2};
+                    #1] (#2) {#3};
 }
-
-
 
 \newenvironment{linkedlist}
 {%
-	\addtocounter{llcounter}{1};
-	
+	\addtocounter{llbranchcount}{1};
+	\setcounter{llnodecount}{0}
 	\tikzset{
 	    every join/.style={   *->,
 	                        shorten <=-0.75em
@@ -29,7 +41,7 @@
 	}
 
 	\node[on chain]{};
-	\begin{scope}[start branch=linkedlist\the\value{llcounter} going right, node distance=1.5em]
+	\begin{scope}[start branch=linkedlist\the\value{llbranchcount} going right, node distance=1.5em]
 }%
 {%
 	\end{scope}
