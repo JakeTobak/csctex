@@ -1,0 +1,36 @@
+\ProvidesPackage{csctex.linkedlist}
+
+
+
+\newcounter{llcounter}
+\setcounter{llcounter}{0}
+
+
+
+\newcommand{\llnode}[3][]{%
+	\node[rectangle split,
+                    rectangle split parts=2,
+                    rectangle split horizontal,
+                    draw,
+                    on chain,
+                    join, #1] (#3) {#2};
+}
+
+
+
+\newenvironment{linkedlist}
+{%
+	\addtocounter{llcounter}{1};
+	
+	\tikzset{
+	    every join/.style={   *->,
+	                        shorten <=-0.75em
+	                    }
+	}
+
+	\node[on chain]{};
+	\begin{scope}[start branch=linkedlist\the\value{llcounter} going right, node distance=1.5em]
+}%
+{%
+	\end{scope}
+}
