@@ -1,3 +1,27 @@
 \ProvidesPackage{csctex}
+\usepackage{xparse}
+\usepackage{csctex.linkedlist}
 \usepackage{pgf, tikz, circuitikz, qtree}
 \usetikzlibrary{fit,arrows,calc,positioning,shapes.multipart,chains}
+
+
+
+\makeatletter
+
+% \textoverline code by egreg on tex.stackexchange.com on 7/26/2011
+% http://tex.stackexchange.com/a/24133
+\newcommand*{\textoverline}[1]{
+  $\overline{\hbox{#1}}\m@th$
+}
+
+\makeatother
+
+
+
+\newenvironment{csctex}%
+{%
+	\begin{tikzpicture}
+}%
+{%
+	\end{tikzpicture}
+}%
